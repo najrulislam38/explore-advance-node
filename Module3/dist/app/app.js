@@ -10,6 +10,8 @@ const path_1 = __importDefault(require("path"));
 const filePath = path_1.default.join(__dirname, "./../../db/todo.js");
 // middleware
 app.use(express_1.default.json());
+const todosRouter = express_1.default.Router();
+app.use("/", todosRouter);
 app.get("/", (req, res) => {
     res.send("Welcome to here.");
 });
@@ -18,7 +20,18 @@ app.get("/", (req, res) => {
 //   // res.send(data);
 //   res.json(data);
 // });
-app.get("/todos/:title", (req, res) => {
+todosRouter.get("/todos", (req, res) => {
+    const data = fs_1.default.readFileSync(filePath, { encoding: "utf-8" });
+    res.json(data);
+});
+// app.get("/todos/:title", (req: Request, res: Response) => {
+//   console.log("from Query:", req.query);
+//   console.log("From Params:", req.params);
+//   const data = fs.readFileSync(filePath, { encoding: "utf-8" });
+//   // res.send(data);
+//   res.json(data);
+// });
+todosRouter.get("/todos/:title", (req, res) => {
     console.log("from Query:", req.query);
     console.log("From Params:", req.params);
     const data = fs_1.default.readFileSync(filePath, { encoding: "utf-8" });
@@ -31,6 +44,7 @@ app.post("/todos/create-todo", (req, res) => {
     res.send("Hello World");
 });
 exports.default = app;
+// app - express.json() - app router - get, post, patch, delete.
 /**
  * Basic file structure.
  *
