@@ -62,9 +62,7 @@ exports.todosRouter.put("/update-todo/:id", (req, res) => __awaiter(void 0, void
     const db = yield mongodb_1.client.db("todosDB");
     const collection = yield db.collection("todos");
     const filter = { _id: new mongodb_2.ObjectId(id) };
-    console.log(id);
     const { title, description, priority, isCompleted } = req.body;
-    console.log(req.body);
     const updatedTodo = yield collection.updateOne(filter, { $set: { title, description, priority, isCompleted } }, { upsert: true });
     res.send(updatedTodo);
 }));

@@ -68,10 +68,7 @@ todosRouter.put("/update-todo/:id", async (req: Request, res: Response) => {
   const collection = await db.collection("todos");
   const filter = { _id: new ObjectId(id) };
 
-  console.log(id);
-
   const { title, description, priority, isCompleted } = req.body;
-  console.log(req.body);
 
   const updatedTodo = await collection.updateOne(
     filter,
