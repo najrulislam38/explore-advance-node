@@ -30,12 +30,36 @@ app.get("/test/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* (
     //   $set: { interests: ["Gaming", "Reading", "Writing"] },
     // };
     // const updateData = {
-    //   $addToSet: { interests: { $each: ["Reading", "Writing", "Traveling"] } },
+    //   $addToSet: { interests: ["Reading", "Writing", "Traveling"] },
     // }; // duplicate data not insert in the array
-    const updateData = {
-        $push: { interests: { $each: ["Reading", "Writing"] } },
-    };
+    // const updateData = {
+    //   $push: { interests: { $each: ["Reading", "Writing"] } },
+    // };// $push operator added duplicate value in the array.
+    // const updateData = {
+    //   $unset: { birthday: "" },
+    // }; // remove operator
+    // const updateData = {
+    //   $pop: { friends: 1 },
+    // }; // remove the last value using 1 and remove first value using -1 from the friend array.
+    // const updateData = {
+    //   // $pull: { friends: "Mir Hussain" }, // get value from array.
+    //   $pullAll: { interests: [["Reading", "Writing", "Traveling"]] },
+    // }; // get all value from an array.
+    // const updateData = {
+    //   $set: {
+    //     "education.$.major": "CSE",
+    //   },
+    // };
+    // const updateData = {
+    //   $inc: {
+    //     age: 3,
+    //   },
+    // }; // use + $inc from increase and - decrease value
     const result = yield collection.findOne(query);
+    // const result = await collection.updateOne(
+    //   { ...query, "education.degree": "Doctor of Philosophy" },
+    //   updateData
+    // );
     // const result = await collection.updateOne(query, updateData);
     res.send(result);
     // $ALL AND $ELEMMATCH operator use case
