@@ -14,15 +14,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongodb_1 = require("../config/mongodb");
+const mongodb_2 = require("mongodb");
 const app = (0, express_1.default)();
 //middleware
 app.use(express_1.default.json());
 app.get("/", (req, res) => {
     res.send("welcome");
 });
-app.get("/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/test/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const db = yield mongodb_1.client.db("practice");
     const collection = yield db.collection("test");
+    const id = req.params.id;
+    const query = { _id: new mongodb_2.ObjectId(id) };
+    // const updateData = {
+    //   $set: { interests: ["Gaming", "Reading", "Writing"] },
+    // };
+    // const updateData = {
+    //   $addToSet: { interests: { $each: ["Reading", "Writing", "Traveling"] } },
+    // }; // duplicate data not insert in the array
+    const updateData = {
+        $push: { interests: { $each: ["Reading", "Writing"] } },
+    };
+    const result = yield collection.findOne(query);
+    // const result = await collection.updateOne(query, updateData);
+    res.send(result);
+    // $ALL AND $ELEMMATCH operator use case
+    // const result = await collection
+    //   .find(
+    //     // { interests: { $all: ["Travelling", "Cooking", "Gaming"] } }, // use $all operator
+    //     {
+    //       skills: {
+    //         $elemMatch: {
+    //           name: "JAVASCRIPT",
+    //           level: "Expert",
+    //         },
+    //       },
+    //     }, // $elemMatch operator use case
+    //     { projection: { skills: 1 } }
+    //   )
+    //   .toArray();
+    // res.send(result);
+    // exists, type and size operator use case
+    // const result = await collection
+    //   // .find({ friends: { $size: 3 } }) size operator
+    //   // .find({ company: { $type: "null" } }) // type operator
+    //   .find({ friends: { $exists: true } }) // exists operator
+    //   .toArray();
+    // res.send(result);
     // Explicit $ and
     // const cursor = await collection.find(
     //   {
@@ -48,10 +86,13 @@ app.get("/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //   { projection: { interests: 1 }, sort: { interests: 1 } }
     // );
     // operator $in
-    const cursor = yield collection.find({
-        interests: { $in: ["Cooking", "Gaming"] },
-    }, { projection: { interests: 1 }, sort: { interests: 1 } });
-    const result = yield cursor.toArray();
-    res.json(result);
+    //   const cursor = await collection.find(
+    //     {
+    //       interests: { $in: ["Cooking", "Gaming"] },
+    //     },
+    //     { projection: { interests: 1 }, sort: { interests: 1 } }
+    //   );
+    //   const result = await cursor.toArray();
+    //   res.json(result);
 }));
 exports.default = app;
