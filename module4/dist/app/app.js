@@ -23,8 +23,35 @@ app.get("/", (req, res) => {
 app.get("/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const db = yield mongodb_1.client.db("practice");
     const collection = yield db.collection("test");
-    const cursor = collection.find({ age: { $gt: 18, $lt: 30 } }, { projection: { age: 1 }, sort: { age: 1 } });
-    const data = yield cursor.toArray();
-    res.json(data);
+    // Explicit $ and
+    // const cursor = await collection.find(
+    //   {
+    //     $and: [
+    //       {
+    //         age: { $gte: 18 },
+    //       },
+    //       {
+    //         age: { $ne: 20 },
+    //       },
+    //       {
+    //         age: { $lte: 30 },
+    //       },
+    //     ],
+    //   },
+    //   { projection: { age: 1 }, sort: { age: 1 } }
+    // );
+    // Explicit $ or
+    // const cursor = await collection.find(
+    //   {
+    //     $or: [{ interests: "Cooking" }, { interests: "Travelling" }],
+    //   },
+    //   { projection: { interests: 1 }, sort: { interests: 1 } }
+    // );
+    // operator $in
+    const cursor = yield collection.find({
+        interests: { $in: ["Cooking", "Gaming"] },
+    }, { projection: { interests: 1 }, sort: { interests: 1 } });
+    const result = yield cursor.toArray();
+    res.json(result);
 }));
 exports.default = app;

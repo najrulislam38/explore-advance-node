@@ -14,12 +14,43 @@ app.get("/test", async (req: Request, res: Response) => {
   const db = await client.db("practice");
   const collection = await db.collection("test");
 
-  const cursor = collection.find(
-    { age: { $gt: 18, $lt: 30 } },
-    { projection: { age: 1 }, sort: { age: 1 } }
+  // Explicit $ and
+  // const cursor = await collection.find(
+  //   {
+  //     $and: [
+  //       {
+  //         age: { $gte: 18 },
+  //       },
+  //       {
+  //         age: { $ne: 20 },
+  //       },
+  //       {
+  //         age: { $lte: 30 },
+  //       },
+  //     ],
+  //   },
+  //   { projection: { age: 1 }, sort: { age: 1 } }
+  // );
+
+  // Explicit $ or
+  // const cursor = await collection.find(
+  //   {
+  //     $or: [{ interests: "Cooking" }, { interests: "Travelling" }],
+  //   },
+  //   { projection: { interests: 1 }, sort: { interests: 1 } }
+  // );
+
+  // operator $in
+  const cursor = await collection.find(
+    {
+      interests: { $in: ["Cooking", "Gaming"] },
+    },
+    { projection: { interests: 1 }, sort: { interests: 1 } }
   );
-  const data = await cursor.toArray();
-  res.json(data);
+
+  const result = await cursor.toArray();
+
+  res.json(result);
 });
 
 export default app;
