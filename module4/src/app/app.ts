@@ -19,7 +19,7 @@ app.get("/test/:id", async (req: Request, res: Response) => {
 
   // const updateData = {
   //   $set: { interests: ["Gaming", "Reading", "Writing"] },
-  // };
+  // }; //
   // const updateData = {
   //   $addToSet: { interests: ["Reading", "Writing", "Traveling"] },
   // }; // duplicate data not insert in the array
